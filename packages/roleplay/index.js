@@ -16,8 +16,8 @@ app.addEvent(eventWithoutMiddlewares, (source, ...args) => {
 
 eventTestStart();
 
-app.use((source, args, next) => {
-	console.log(`"${source.name}" прошел через первую промежуточную функцию!`);
+app.use((source, args, next, eventName) => {
+	console.log(`"${source.name}" прошел через первую промежуточную функцию ивента ${eventName}!`);
 	next();
 });
 
@@ -32,9 +32,9 @@ eventTestStartFirst();
 
 eventTestStart();
 
-app.use((source, args, next) => {
+app.use((source, args, next, eventName) => {
 	if(source.cancel) {
-		console.error(`"${source.name}" выполнен не будет, так как он отменен во второй промежуточной функции.`);
+		console.error(`"${eventName}" выполнен не будет, так как он отменен во второй промежуточной функции.`);
 		return;
 	}
 

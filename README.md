@@ -15,6 +15,19 @@
 const RageApp = require("./middlewares/app.js");
 
 const app = new RageApp({alertAllNoAppEvents: true});
+
+app.addEvent(eventWithoutMiddlewares, (source, ...args) => {
+	console.log(`Этот всегда был и будет выполнен без проверок!`);
+});
+
+app.use((source, args, next, eventName) => {
+	console.log(`Теперь все следующие ивенты будут залогированы! Например, ${eventName}`);
+	next();
+});
+
+app.addEvent(eventWithMiddleware, (source, ...args) => {
+	console.log(`Этот ивент уже будет с логированием и все следующие тоже!`);
+});
 ```
 
 **new RageApp(flags)**
@@ -25,7 +38,7 @@ const app = new RageApp({alertAllNoAppEvents: true});
 * *source* - это источник, который вызвал событие. Например, игрок или автомобиль (всегда идет первым аргументом в ивенте).
 * *args* - это аргументы, которые идут после источника события.
 * *next* - это функция, которая не принимает в себя НИЧЕГО. После неё так же можно использовать другие методы, это не return. Данная функция просто говорит о том, что можно идти к следующему middleware и все условия выполнены.
-
+* *eventName* - это имя ивента, который был вызван и обрабатывается с помощью этой middleware-функции.
 
 **Пример**
 ```JavaScript

@@ -49,7 +49,7 @@ class RageEvent {
 				flag = true;
 			}
 
-			this.middlewares[i](source, args, next);
+			this.middlewares[i](source, args, next, this.name);
 
 			if(!flag) {
 				return;

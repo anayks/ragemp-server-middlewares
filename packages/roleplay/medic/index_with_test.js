@@ -28,12 +28,12 @@ module.exports = (App) => {
 	TestMedicLeader(eventLeaderMedicLeaderCar);
 }
 
-const medicMiddlware = (source, args, next) => {
+const medicMiddlware = (source, args, next, eventName) => {
 	if(!source.isMedic) {
-		console.log(`"${source.name}" попытался сделать действие, доступное для медиков, но он не медик и ничего не получилось!`);
+		console.log(`"${source.name}" попытался сделать ${eventName}, доступное для медиков, но он не медик и ничего не получилось!`);
 		return;
 	}
-	console.log(`"${source.name}" прошел через промежуточную функцию медиков!`);
+	console.log(`"${source.name}" прошел через промежуточную функцию медиков ${eventName}!`);
 	next();
 }
 
@@ -53,12 +53,12 @@ function medicShout(player) {
 	console.log(`Медик "${player.name}" крикнул что-то на медицинском!`);
 }
 
-const medicLeaderMiddleWare = (source, args, next) => {
+const medicLeaderMiddleWare = (source, args, next, eventName) => {
 	if(!source.isMedicLeader) {
-		console.log(`"${source.name}" попытался сделать действие, доступное для лидера медиков, но он не лидер медиков и ничего не получилось!`);
+		console.log(`"${source.name}" попытался сделать ${eventName}, доступное для лидера медиков, но он не лидер медиков и ничего не получилось!`);
 		return;
 	}
-	console.log(`"${source.name}" прошел через промежуточную функцию лидеров медиков!`);
+	console.log(`"${source.name}" прошел через промежуточную функцию лидеров медиков ${eventName}!`);
 	next();
 }
 
