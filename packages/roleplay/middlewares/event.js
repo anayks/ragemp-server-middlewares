@@ -5,11 +5,11 @@ class RageEvent {
 		}
 
 		if(!name.length) {
-			throw new Error("Failed to create single event: name is not string.");
+			throw new Error("Failed to create single event: name is empty.");
 		}
 
 		if(typeof callback != "function") {
-			throw new Error("Failed to create single event: name is not string.");
+			throw new Error("Failed to create single event: callback is not a function.");
 		}
 
 		this.callback = callback;
