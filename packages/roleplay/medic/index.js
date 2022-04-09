@@ -1,3 +1,5 @@
+const eventPlayerEnterMarker		= "medic::enter_marker"
+
 const eventMedicEnterCar 				= "medic::enter_car";
 const eventMedicEnterWarehouse 	= "medic::enter_warehouse";
 const eventMedicGreetings 			= "medic::greetings";
@@ -10,6 +12,8 @@ const eventLeaderMedicRatio 		= "medic::leader_ratio";
 
 module.exports = (App) => {
 	const medics = App.addGroup("medics");
+	medics.use(loginMiddleware);
+	medics.addEvent(eventPlayerEnterMarker,		playerEnterMarker);
 	medics.use(medicMiddlware);
 	medics.addEvent(eventMedicEnterCar, 			medicEnterCar);
 	medics.addEvent(eventMedicEnterWarehouse, medicEnterWarehouse);
@@ -24,13 +28,26 @@ module.exports = (App) => {
 	medicLeaderGroup.addEvent(eventLeaderMedicRatio, 			leaderRatio);
 }
 
+const loginMiddleware = (source, args, next, eventName) => {
+	if(!source.logged) {
+		console.log(`"${source.name}" попытался сделать ${eventName}, доступное для медиков, но он не авторизован и ничего не получилось!`);
+		return;
+	}
+	console.log(`"${source.name}" прошел через промежуточную функцию авторизованных игроков ${eventName}!`);
+	next();
+}
+
 const medicMiddlware = (source, args, next, eventName) => {
 	if(!source.isMedic) {
 		console.log(`"${source.name}" попытался сделать ${eventName}, доступное для медиков, но он не медик и ничего не получилось!`);
 		return;
 	}
-	console.log(`"${source.name}" прошел через промежуточную функцию медиков!`);
+	console.log(`"${source.name}" прошел через промежуточную функцию медиков ${eventName}!`);
 	next();
+}
+
+function playerEnterMarker(player) {
+	console.log(`Игрок ${player.name} встал на маркер!`);
 }
 
 function medicGreetings(player) {
@@ -54,7 +71,7 @@ const medicLeaderMiddleWare = (source, args, next, eventName) => {
 		console.log(`"${source.name}" попытался сделать ${eventName}, доступное для лидера медиков, но он не лидер медиков и ничего не получилось!`);
 		return;
 	}
-	console.log(`"${source.name}" прошел через промежуточную функцию лидеров медиков!`);
+	console.log(`"${source.name}" прошел через промежуточную функцию лидеров медиков ${eventName}!`);
 	next();
 }
 

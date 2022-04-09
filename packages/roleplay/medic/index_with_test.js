@@ -1,3 +1,5 @@
+const eventPlayerEnterMarker		= "medic::enter_marker"
+
 const eventMedicEnterCar 				= "medic::enter_car";
 const eventMedicEnterWarehouse 	= "medic::enter_warehouse";
 const eventMedicGreetings 			= "medic::greetings";
@@ -10,6 +12,8 @@ const eventLeaderMedicRatio 		= "medic::leader_ratio";
 
 module.exports = (App) => {
 	const medics = App.addGroup("medics");
+	medics.use(loginMiddleware);
+	medics.addEvent(eventPlayerEnterMarker,		playerEnterMarker);
 	medics.use(medicMiddlware);
 	medics.addEvent(eventMedicEnterCar, 			medicEnterCar);
 	medics.addEvent(eventMedicEnterWarehouse, medicEnterWarehouse);
@@ -26,6 +30,16 @@ module.exports = (App) => {
 	// Tests
 	TestMedics(eventMedicEnterCar);
 	TestMedicLeader(eventLeaderMedicLeaderCar);
+	TestLogged(eventPlayerEnterMarker);
+}
+
+const loginMiddleware = (source, args, next, eventName) => {
+	if(!source.logged) {
+		console.log(`"${source.name}" попытался сделать ${eventName}, доступное для медиков, но он не авторизован и ничего не получилось!`);
+		return;
+	}
+	console.log(`"${source.name}" прошел через промежуточную функцию авторизованных игроков ${eventName}!`);
+	next();
 }
 
 const medicMiddlware = (source, args, next, eventName) => {
@@ -35,6 +49,10 @@ const medicMiddlware = (source, args, next, eventName) => {
 	}
 	console.log(`"${source.name}" прошел через промежуточную функцию медиков ${eventName}!`);
 	next();
+}
+
+function playerEnterMarker(player) {
+	console.log(`Игрок ${player.name} встал на маркер!`);
 }
 
 function medicGreetings(player) {
@@ -117,6 +135,40 @@ function TestMedicLeader(eventName) {
 			name: "Медик 6",
 			isMedic: true,
 			isMedicLeader: true,
+		}
+	];
+
+	for(let i = 0; i < testData.length; i++) {
+		const data = testData[i];
+		mp.events.call(eventName, data);
+	}
+}
+
+function TestLogged(eventName) {
+	const testData = [
+		{
+			name: "Медик 7",
+			isMedic: false,
+			isMedicLeader: false,
+			logged: false,
+		},
+		{
+			name: "Медик 8",
+			isMedic: false,
+			isMedicLeader: true,
+			logged: false,
+		},
+		{
+			name: "Медик 9",
+			isMedic: true,
+			isMedicLeader: false,
+			logged: true,
+		},
+		{
+			name: "Медик 10",
+			isMedic: true,
+			isMedicLeader: true,
+			logged: true,
 		}
 	];
 
