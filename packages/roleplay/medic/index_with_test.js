@@ -1,24 +1,31 @@
-const medicEventName = "medic::greetings!";
-const leaderEventName = "medic::leader_greetings";
+const eventMedicEnterCar 				= "medic::enter_car";
+const eventMedicEnterWarehouse 	= "medic::enter_warehouse";
+const eventMedicGreetings 			= "medic::greetings";
+const eventMedicShout 					= "medic::shout";
+
+const eventLeaderMedicLeaderCar = "medic::leader_car";
+const eventLeaderMedicExplode 	= "medic::leader_explode";
+const eventLeaderMedicGreetings = "medic::leader_greetings";
+const eventLeaderMedicRatio 		= "medic::leader_ratio";
 
 module.exports = (App) => {
 	const medics = App.addGroup("medics");
 	medics.use(medicMiddlware);
-	medics.addEvent(medicEventName, medicEnterCar);
-	medics.addEvent(medicEventName, medicEnterWarehouse);
-	medics.addEvent(medicEventName, medicGreetings);
-	medics.addEvent(medicEventName, medicShout);
+	medics.addEvent(eventMedicEnterCar, 			medicEnterCar);
+	medics.addEvent(eventMedicEnterWarehouse, medicEnterWarehouse);
+	medics.addEvent(eventMedicGreetings, 			medicGreetings);
+	medics.addEvent(eventMedicShout, 					medicShout);
 
 	const medicLeaderGroup = medics.addGroup("medicLeader");
 	medicLeaderGroup.use(medicLeaderMiddleWare);
-	medicLeaderGroup.addEvent(leaderEventName, leaderCar);
-	medicLeaderGroup.addEvent(leaderEventName, leaderExplode);
-	medicLeaderGroup.addEvent(leaderEventName, leaderGreetings);
-	medicLeaderGroup.addEvent(leaderEventName, leaderRatio);
+	medicLeaderGroup.addEvent(eventLeaderMedicLeaderCar, 	leaderCar);
+	medicLeaderGroup.addEvent(eventLeaderMedicExplode, 		leaderExplode);
+	medicLeaderGroup.addEvent(eventLeaderMedicGreetings, 	leaderGreetings);
+	medicLeaderGroup.addEvent(eventLeaderMedicRatio, 			leaderRatio);
 
 	// Tests
-	TestMedics(medicEventName);
-	TestMedicLeader(leaderEventName);
+	TestMedics(eventMedicEnterCar);
+	TestMedicLeader(eventLeaderMedicLeaderCar);
 }
 
 const medicMiddlware = (source, args, next) => {

@@ -1,5 +1,5 @@
 class RageEvent {
-	constructor(name, callback, middlewares = [], type = "default", system = '', regFunction) {
+	constructor(name, callback, middlewares = [], regFunction) {
 		if(typeof name != "string") {
 			throw new Error("Failed to create single event: name is not string.");
 		}

@@ -1,4 +1,4 @@
-const Event = require("./event.js");
+const RageEvent = require("./event.js");
 const Group = require("./group.js")
 
 let singleton = null;
@@ -37,10 +37,10 @@ class RageApp {
 		}
 	}
 
-	addEvent(name, callback, middlewares = [], type, system) {
-		middlewares.concat(this.middlewares);
+	addEvent(name, callback, middlewares = []) {
+		middlewares = this.middlewares.slice().concat(middlewares);
 
-		const event = new Event(name, callback, this.middlewares, type, system, this.regFunction);
+		const event = new RageEvent(name, callback, middlewares, this.regFunction);
 		this.events.push(event);
 
 		return event;
