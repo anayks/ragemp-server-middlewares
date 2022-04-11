@@ -11,7 +11,7 @@ const eventLeaderMedicGreetings = "medic::leader_greetings";
 const eventLeaderMedicRatio 		= "medic::leader_ratio";
 
 module.exports = () => {
-	mp.events.add(eventPlayerEnterMarker, 		);
+	mp.events.add(eventPlayerEnterMarker, 		playerEnterMarker);
 	mp.events.add(eventMedicEnterCar, 				medicEnterCar);
 	mp.events.add(eventMedicEnterWarehouse, 	medicEnterWarehouse);
 	mp.events.add(eventMedicGreetings, 				medicGreetings);
