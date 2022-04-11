@@ -40,7 +40,7 @@ class RageEvent {
 			return;
 		}
 
-    args = args.slice(1, args.length);
+		args = args.slice(1, args.length);
 
 		for(let i = 0; i < this.middlewares.length; i++) {
 			let flag = false;
